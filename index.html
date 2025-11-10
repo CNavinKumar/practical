@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Support - Raise Ticket</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1>Customer Support Ticket System</h1>
+
+    <form id="ticketForm">
+      <label>Name:</label>
+      <input type="text" id="name" required>
+
+      <label>Email:</label>
+      <input type="email" id="email" required>
+
+      <label>Issue Subject:</label>
+      <input type="text" id="subject" required>
+
+      <label>Description:</label>
+      <textarea id="description" rows="4" required></textarea>
+
+      <label>Priority:</label>
+      <select id="priority">
+        <option>Low</option>
+        <option>Medium</option>
+        <option>High</option>
+      </select>
+
+      <button type="submit">Submit Ticket</button>
+    </form>
+
+    <div id="message"></div>
+    
+  </div>
+
+  <script>
+    document.getElementById('ticketForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const subject = document.getElementById('subject').value;
+      const description = document.getElementById('description').value;
+      const priority = document.getElementById('priority').value;
+
+      const ticket = {
+        id: Date.now(),
+        name,
+        email,
+        subject,
+        description,
+        priority,
+        status: "Open",
+        createdAt: new Date().toLocaleString()
+      };
+
+      let tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+      tickets.push(ticket);
+      localStorage.setItem('tickets', JSON.stringify(tickets));
+
+      document.getElementById('ticketForm').reset();
+      document.getElementById('message').innerHTML =
+        `<p class="success">✅ Ticket created successfully! Your Ticket ID: <strong>${ticket.id}</strong></p>`;
+    });
+  </script>
+
+</body>
+</html>
